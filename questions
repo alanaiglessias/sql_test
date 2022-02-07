@@ -1,0 +1,36 @@
+-- EXERCÍCIO --
+-- questão 1 -> Escreva uma consulta para exibir o nome (first_name e last_name) e o ID do departamento de todos empregados nos departamentos 30 ou 100 em ordem crescente.
+-- Write a query to display the name (first_name and last_name) and department ID of all employees in departments 30 or 100 in ascending order.
+select first_name, last_name, department_id
+from employees
+where department_id in (30, 100)
+order by department_id asc;
+
+-- questão 2 -> Escreva uma consulta para encontrar o ID do gerente e o salário do funcionário mais mal pago para esse Gerente.
+-- Write a query to find the manager ID and the salary of the lowest-paid employee for that manager.
+select manager_id, min(salary) as 'menor salário pago'
+from employees
+group by manager_id;
+
+-- questão 3 -> Escreva uma consulta para encontrar o nome (first_name e last_name) e o salário dos funcionários que ganham mais do que o funcionário cujo sobrenome é Bell.
+-- Write a query to find the name (first_name and last_name) and the salary of the employees who earn more than the employee whose last name is Bell.
+select first_name, last_name, salary
+from employees
+where salary > (select salary from employees where last_name = 'Bell');
+
+-- questão 4 -> Escreva uma consulta para encontrar o nome (first_name e last_name), cargo, ID do departamento e nome de todos os funcionários que trabalham em Londres.
+-- Write a query to find the name (first_name and last_name), job, department ID and name of all employees that work in London.
+select e.first_name, e.last_name, j.job_title, e.department_id
+from employees e
+inner join jobs j on e.job_id = j.job_id
+inner join departments d on e.department_id = d.department_id
+inner join locations l on d.location_id = l.location_id
+where l.city = 'London';
+
+-- questão 5 -> Escreva uma consulta para obter o nome do departamento e o número de funcionários no departamento.
+-- Write a query to get the department name and number of employees in the department.
+select d.department_name, count(d.department_id) as 'quantidade de funcionários'
+from employees e
+join departments d
+on e.department_id = d.department_id
+group by d.department_id;
